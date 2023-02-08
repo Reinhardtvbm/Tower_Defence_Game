@@ -3,5 +3,6 @@ pub mod gui {
 }
 
 pub mod resources {
+    pub mod entity;
     pub mod grid;
 }

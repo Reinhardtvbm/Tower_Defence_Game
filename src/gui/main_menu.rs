@@ -76,7 +76,7 @@ pub fn setup_main_menu(mut commands: Commands) {
                             },
                             ..default()
                         },
-                        background_color: Color::WHITE.into(),
+                        background_color: Color::BEIGE.into(),
                         ..default()
                     });
                 });

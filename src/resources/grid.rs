@@ -4,10 +4,10 @@ use bevy::prelude::*;
 
 /// Grid that represents the tiles on the map
 #[derive(Resource)]
-struct Grid(HashMap<GridCoord, Tile>);
+pub struct Grid(HashMap<GridCoord, Tile>);
 
 impl Grid {
-    fn new(size: GridSize) -> Self {
+    pub fn new(size: GridSize) -> Self {
         let width = size.width;
         let height = size.height;
 
@@ -23,12 +23,12 @@ impl Grid {
     }
 }
 
-struct Tile;
+pub struct Tile;
 
 #[derive(Hash, PartialEq, Eq)]
-struct GridCoord(usize, usize);
+pub struct GridCoord(usize, usize);
 
-struct GridSize {
+pub struct GridSize {
     pub width: usize,
     pub height: usize,
 }

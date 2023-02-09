@@ -1,5 +1,7 @@
-pub mod gui {
-    pub mod main_menu;
+pub mod plugins {
+    pub mod gui {
+        pub mod main_menu;
+    }
 }
 
 pub mod resources {

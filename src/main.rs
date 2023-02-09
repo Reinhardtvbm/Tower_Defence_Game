@@ -1,6 +1,5 @@
-use std::slice::Iter;
-
 use bevy::prelude::*;
+use std::slice::Iter;
 use tower_defence::resources::grid::{Grid, GridSize};
 //use tower_defence::gui::main_menu::setup_main_menu;
 

@@ -8,12 +8,14 @@ use super::entity::TowerEntity;
 #[derive(Resource, Debug)]
 pub struct Grid {
     tiles: HashMap<GridCoord, Tile>,
-    width: usize,
-    height: usize,
+    size: GridSize,
+    cell_length: f32,
+    y_offset: f32,
+    x_offset: f32,
 }
 
 impl Grid {
-    pub fn new(size: GridSize) -> Self {
+    pub fn new(size: GridSize, cell_length: f32, x_offset: f32, y_offset: f32) -> Self {
         let width = size.width;
         let height = size.height;
 
@@ -27,17 +29,42 @@ impl Grid {
 
         Self {
             tiles: grid_map,
-            width,
-            height,
+            size,
+            cell_length,
+            x_offset,
+            y_offset,
         }
     }
 
     pub fn get_width(&self) -> usize {
-        self.width
+        self.size.width
     }
 
     pub fn get_height(&self) -> usize {
-        self.height
+        self.size.height
+    }
+
+    pub fn get_cell_length(&self) -> f32 {
+        self.cell_length
+    }
+
+    pub fn get_x_offset(&self) -> f32 {
+        self.x_offset
+    }
+
+    pub fn get_y_offset(&self) -> f32 {
+        self.y_offset
+    }
+
+    pub fn get_cell_mouse_pos(&self, mouse_x: f32, mouse_y: f32) -> Option<(&GridCoord, &Tile)> {
+        let x = ((mouse_x - self.x_offset) / self.cell_length).floor() as usize;
+        let y = ((mouse_y + self.y_offset + ((self.cell_length * self.size.height as f32) / 2.0))
+            / self.cell_length)
+            .floor() as usize;
+
+        let grid_coord = GridCoord(x, y);
+
+        self.get_key_value(&grid_coord)
     }
 
     // HashMap functions:
@@ -100,8 +127,9 @@ impl Tile {
 }
 
 #[derive(Hash, PartialEq, Eq, Debug)]
-pub struct GridCoord(usize, usize);
+pub struct GridCoord(pub usize, pub usize);
 
+#[derive(Debug)]
 pub struct GridSize {
     pub width: usize,
     pub height: usize,

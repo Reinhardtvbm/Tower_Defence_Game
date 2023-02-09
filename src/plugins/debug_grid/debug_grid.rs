@@ -1,4 +1,4 @@
-use crate::resources::grid::Grid;
+use crate::resources::grid::{Grid, GridSize};
 use bevy::prelude::*;
 
 pub struct DebugGridPlugin;
@@ -6,6 +6,15 @@ pub struct DebugGridPlugin;
 impl Plugin for DebugGridPlugin {
     fn build(&self, app: &mut bevy::prelude::App) {
         app.add_startup_system(debug_grid)
+            .insert_resource(Grid::new(
+                GridSize {
+                    width: 25,
+                    height: 25,
+                },
+                25.0,
+                -450.0,
+                0.0,
+            ))
             .insert_resource(PrevBlock(None))
             .add_system(highlight_cell);
     }

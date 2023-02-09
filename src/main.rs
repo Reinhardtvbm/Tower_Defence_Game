@@ -1,11 +1,32 @@
 use bevy::prelude::*;
+use clap::Parser;
 use std::slice::Iter;
 use tower_defence::resources::grid::{Grid, GridSize};
 //use tower_defence::gui::main_menu::setup_main_menu;
 
+#[derive(Parser, Debug)]
+struct Args {
+    /// whether the game should be run in debug
+    #[arg(short, long)]
+    debug: bool,
+
+    /// whether to launch the map maker instead of the game
+    #[arg(short, long)]
+    map: bool,
+}
+
 fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
+    let args = Args::parse();
+
+    // craeting app
+    let mut app = App::new();
+
+    if args.debug {
+        app.add_startup_system(debug_grid);
+    }
+
+    // adding stuff that is always necessary
+    app.add_plugins(DefaultPlugins)
         //.add_startup_system(setup_main_menu)
         .add_startup_system(setup)
         .insert_resource(Grid::new(
@@ -18,9 +39,10 @@ fn main() {
             0.0,
         ))
         .insert_resource(BlockEntities(Vec::new()))
-        .add_startup_system(debug_grid)
-        .add_system(highlight_cell)
-        .run();
+        .add_system(highlight_cell);
+
+    // running app
+    app.run();
 }
 
 #[derive(Resource)]

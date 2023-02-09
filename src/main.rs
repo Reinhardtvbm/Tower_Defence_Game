@@ -17,26 +17,26 @@ fn main() {
             -450.0,
             0.0,
         ))
-        .insert_resource(BlockEntities(Vec::new()))
+        .insert_resource(PrevBlock(None))
         .add_startup_system(debug_grid)
         .add_system(highlight_cell)
         .run();
 }
 
 #[derive(Resource)]
-struct BlockEntities(Vec<Entity>);
+struct PrevBlock(Option<Entity>);
 
-impl BlockEntities {
-    pub fn push(&mut self, entity: Entity) {
-        self.0.push(entity);
+impl PrevBlock {
+    pub fn fill(&mut self, entity: Entity) {
+        self.0 = Some(entity);
     }
 
-    pub fn iter(&self) -> Iter<'_, Entity> {
-        self.0.iter()
+    pub fn entity(&self) -> Option<Entity> {
+        self.0
     }
 
     pub fn clear(&mut self) {
-        self.0.clear()
+        self.0 = None;
     }
 }
 
@@ -112,7 +112,7 @@ fn highlight_cell(
     mut commands: Commands,
     windows: Res<Windows>,
     //buttons: Res<Input<MouseButton>>,
-    mut entities: ResMut<BlockEntities>,
+    mut prev_block: ResMut<PrevBlock>,
 ) {
     // Games typically only have one window (the primary window).
     // For multi-window applications, you need to use a specific window ID here.
@@ -125,7 +125,7 @@ fn highlight_cell(
     // if the cursor is in the window, then proceed
     if let Some(mouse_pos) = window.cursor_position() {
         // if the cursor position maps to a grid coordinate then highlight that cell
-        if let Some((grid_coord, _)) = grid.get_cell_mouse_pos(
+        if let Some((grid_coord, tile)) = grid.get_cell_mouse_pos(
             mouse_pos.x - half_window_width,
             mouse_pos.y - hald_window_height,
         ) {
@@ -140,12 +140,12 @@ fn highlight_cell(
             );
 
             // remove the highlights associated with previous mouse positions
-            for e in entities.iter() {
-                commands.entity(*e).despawn();
+            if let Some(entity) = prev_block.entity() {
+                commands.entity(entity).despawn();
             }
 
             // clear the Vec that holds those previous highlight entities
-            entities.clear();
+            prev_block.clear();
 
             // calculate the x position of the new highlight block
             let x_pos = (grid.get_cell_length() / 2.0)
@@ -157,6 +157,10 @@ fn highlight_cell(
                 + (grid_coord.1 as f32 * grid.get_cell_length())
                 + grid.get_y_offset()
                 - (grid.get_cell_length() / 2.0 * grid.get_height() as f32);
+
+            let position = tile.get_position();
+            let x = position.x;
+            let y = position.y;
 
             // spawn the block that highlights the cell
             let new_entity = commands
@@ -170,11 +174,7 @@ fn highlight_cell(
                         ..default()
                     },
                     transform: Transform {
-                        translation: Vec3 {
-                            x: x_pos,
-                            y: y_pos,
-                            z: 0.0,
-                        },
+                        translation: Vec3 { x, y, z: 0.0 },
                         ..default()
                     },
                     ..default()
@@ -182,7 +182,7 @@ fn highlight_cell(
                 .id();
 
             // put the block in the entities Vec so we can despawn it later
-            entities.push(new_entity);
+            prev_block.fill(new_entity);
         }
     }
 }

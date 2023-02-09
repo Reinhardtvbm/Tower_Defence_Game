@@ -8,8 +8,8 @@ fn main() {
         //.add_startup_system(setup_main_menu)
         .add_startup_system(setup)
         .insert_resource(Grid::new(GridSize {
-            width: 50,
-            height: 25,
+            width: 27,
+            height: 15,
         }))
         .add_startup_system(debug_grid)
         .run();

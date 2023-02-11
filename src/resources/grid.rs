@@ -24,14 +24,14 @@ impl Grid {
         (0..height).into_iter().for_each(|row| {
             (0..width).into_iter().for_each(|column| {
                 // calculate the x position of the new highlight block
-                let x_pos = (cell_length / 2.0) + (row as f32 * cell_length) + x_offset;
+                let x_pos = (cell_length / 2.0) + (column as f32 * cell_length) + x_offset;
 
                 // calculate the x position of the new highlight block
-                let y_pos = (cell_length / 2.0) + (column as f32 * cell_length) + y_offset
+                let y_pos = (cell_length / 2.0) + (row as f32 * cell_length) + y_offset
                     - (cell_length / 2.0 * height as f32);
 
                 grid_map.insert(
-                    GridCoord(row, column),
+                    GridCoord(column, row),
                     Tile::new(Vec2 { x: x_pos, y: y_pos }),
                 );
             });
@@ -117,20 +117,20 @@ impl Grid {
 #[derive(Debug)]
 pub struct Tile {
     entity: Option<TowerEntity>,
-    position: Vec2,
+    spawn_position: Vec2,
 }
 
 impl Tile {
     /// creates a new Tile struct with no TowerEntity
-    pub fn new(position: Vec2) -> Self {
+    pub fn new(spawn_position: Vec2) -> Self {
         Self {
             entity: None,
-            position,
+            spawn_position,
         }
     }
 
-    pub fn get_position(&self) -> Vec2 {
-        self.position
+    pub fn get_spawn_position(&self) -> Vec2 {
+        self.spawn_position
     }
 
     /// changes the Tile's entity to None
@@ -144,7 +144,7 @@ impl Tile {
     }
 }
 
-#[derive(Hash, PartialEq, Eq, Debug)]
+#[derive(Hash, PartialEq, Eq, Debug, Clone, Copy)]
 pub struct GridCoord(pub usize, pub usize);
 
 #[derive(Debug)]

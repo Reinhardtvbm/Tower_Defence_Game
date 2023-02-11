@@ -12,18 +12,18 @@ impl Plugin for DebugGridPlugin {
 }
 
 #[derive(Resource)]
-struct PrevBlock(Option<Entity>);
+pub struct PrevBlock(pub Option<Entity>);
 
 impl PrevBlock {
-    fn fill(&mut self, entity: Entity) {
+    pub fn fill(&mut self, entity: Entity) {
         self.0 = Some(entity);
     }
 
-    fn entity(&self) -> Option<Entity> {
+    pub fn entity(&self) -> Option<Entity> {
         self.0
     }
 
-    fn clear(&mut self) {
+    pub fn clear(&mut self) {
         self.0 = None;
     }
 }
@@ -129,7 +129,7 @@ fn highlight_cell(
             // clear the Vec that holds those previous highlight entities
             prev_block.clear();
 
-            let position = tile.get_position();
+            let position = tile.get_spawn_position();
             let x = position.x;
             let y = position.y;
 

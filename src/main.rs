@@ -2,7 +2,10 @@ use bevy::prelude::*;
 
 use clap::Parser;
 use tower_defence::{
-    plugins::debug_grid::debug_grid::DebugGridPlugin,
+    plugins::{
+        debug_grid::debug_grid::{DebugGridPlugin, PrevBlock},
+        place_tower::place_tower::PlaceTowerPlugin,
+    },
     resources::grid::{Grid, GridSize},
 };
 //use tower_defence::gui::main_menu::setup_main_menu;
@@ -34,13 +37,14 @@ fn main() {
         .add_startup_system(setup)
         .insert_resource(Grid::new(
             GridSize {
-                width: 25,
-                height: 25,
+                width: 33,
+                height: 17,
             },
-            25.0,
-            -450.0,
+            60.0,
+            -950.0,
             0.0,
         ))
+        .add_plugin(PlaceTowerPlugin)
         .run();
 }
 

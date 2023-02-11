@@ -6,6 +6,11 @@ pub mod plugins {
     pub mod debug_grid {
         pub mod debug_grid;
     }
+
+    pub mod place_tower {
+        pub mod place_fsm;
+        pub mod place_tower;
+    }
 }
 
 pub mod resources {

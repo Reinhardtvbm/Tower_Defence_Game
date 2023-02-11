@@ -1,12 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{
-    plugins::debug_grid::debug_grid::PrevBlock,
-    resources::{
-        entity::{Tower, TowerEntity},
-        grid::{Grid, Tile},
-    },
-};
+use crate::{plugins::debug_grid::debug_grid::PrevBlock, resources::grid::Grid};
 
 use super::place_fsm::{PlaceFSM, PlaceState};
 
@@ -48,25 +42,10 @@ fn select_entity_square(
                     mouse_pos.y - half_window_height,
                 ) {
                     let spawn_position = tile.get_spawn_position();
+                    let coord = *grid_coord;
 
                     if buttons.just_pressed(MouseButton::Left) {
-                        let tower = TowerEntity::Tower(Tower::new(100.0, 1.0, 1.0));
-
-                        let mut new_tile = Tile::new(spawn_position);
-                        new_tile.set_entity(tower);
-
-                        let coord = *grid_coord;
-                        drop(grid_coord);
-                        drop(tile);
-
-                        grid.insert(coord, new_tile);
-
-                        spawn_sprite(
-                            commands,
-                            asset_server,
-                            spawn_position,
-                            grid.get_cell_length(),
-                        );
+                        grid.spawn_tower(&coord, commands, asset_server);
 
                         state.toggle();
                     } else {

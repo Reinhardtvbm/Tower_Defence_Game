@@ -2,7 +2,7 @@ use std::collections::{hash_map::Keys, HashMap};
 
 use bevy::prelude::*;
 
-use super::entity::TowerEntity;
+use super::entity::{Tower, TowerEntity};
 
 /// Grid that represents the tiles on the map
 #[derive(Resource, Debug)]
@@ -45,6 +45,45 @@ impl Grid {
             y_offset,
         }
     }
+
+    pub fn spawn_tower(
+        &mut self,
+        grid_coord: &GridCoord,
+        mut commands: Commands,
+        asset_server: Res<AssetServer>,
+    ) {
+        let old_tile = self.get(grid_coord).unwrap();
+        let spawn_position = old_tile.get_spawn_position();
+
+        let entity = commands
+            .spawn(SpriteBundle {
+                transform: Transform {
+                    translation: Vec3 {
+                        x: spawn_position.x,
+                        y: spawn_position.y,
+                        z: 0.0,
+                    },
+                    rotation: Quat::from_rotation_x(0.0),
+                    scale: Vec3 {
+                        x: self.cell_length / 100.0,
+                        y: self.cell_length / 100.0,
+                        z: 500.0,
+                    },
+                },
+                texture: asset_server.load("test_tower.png"),
+                ..default()
+            })
+            .id();
+
+        let tower = TowerEntity::Tower(Tower::new(100.0, 1.0, 1.0, entity));
+
+        let mut new_tile = Tile::new(spawn_position);
+        new_tile.set_entity(tower);
+
+        self.insert(*grid_coord, new_tile);
+    }
+
+    // getters
 
     pub fn get_width(&self) -> usize {
         self.size.width

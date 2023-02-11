@@ -1,4 +1,4 @@
-use bevy::prelude::Component;
+use bevy::prelude::{Component, Entity};
 
 #[derive(Debug)]
 pub enum TowerEntity {
@@ -12,15 +12,21 @@ pub struct Tower {
     health: f32,
     projectile_damage: f32,
     fire_rate: f32,
+    entity: Entity,
 }
 
 impl Tower {
-    pub fn new(health: f32, projectile_damage: f32, fire_rate: f32) -> Self {
+    pub fn new(health: f32, projectile_damage: f32, fire_rate: f32, entity: Entity) -> Self {
         Self {
             health,
             projectile_damage,
             fire_rate,
+            entity,
         }
+    }
+
+    pub fn get_entity(&self) -> Entity {
+        self.entity
     }
 
     pub fn increase_damage_constant(&mut self, constant: f32) {

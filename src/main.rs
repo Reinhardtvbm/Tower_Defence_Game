@@ -3,8 +3,7 @@ use bevy::prelude::*;
 use clap::Parser;
 use tower_defence::{
     plugins::{
-        debug_grid::debug_grid::{DebugGridPlugin, PrevBlock},
-        place_tower::place_tower::PlaceTowerPlugin,
+        debug_grid::debug_grid::DebugGridPlugin, place_tower::place_tower::PlaceTowerPlugin,
     },
     resources::grid::{Grid, GridSize},
 };

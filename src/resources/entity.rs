@@ -1,5 +1,7 @@
 use bevy::prelude::Component;
 
+use crate::plugins::spawn_enemy_plugin::components::enemy::Enemy;
+
 #[derive(Debug, Component, Clone)]
 pub enum TowerEntity {
     Tower(Tower),
@@ -57,14 +59,6 @@ impl Tower {
         self.range *= 1.0 + (percentage / 100.0);
     }
 }
-
-#[derive(Debug, Clone)]
-pub struct Enemy {
-    _health: usize,
-    _speed: usize,
-}
-
-impl Enemy {}
 
 #[derive(Debug, Clone)]
 pub struct Path;

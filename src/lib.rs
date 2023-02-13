@@ -1,4 +1,7 @@
 pub mod plugins {
+    pub mod shoot_tower_plugin;
+    pub mod spawn_enemy_plugin;
+
     pub mod gui {
         pub mod main_menu;
     }
@@ -10,14 +13,6 @@ pub mod plugins {
     pub mod place_tower {
         pub mod place_fsm;
         pub mod place_tower;
-    }
-
-    pub mod spawn_enemy {
-        pub mod spawn_enemy;
-    }
-
-    pub mod shoot_tower {
-        pub mod shoot_tower;
     }
 }
 

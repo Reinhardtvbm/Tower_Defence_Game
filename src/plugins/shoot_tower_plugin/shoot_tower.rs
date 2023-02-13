@@ -2,7 +2,10 @@ use std::f32::consts::PI;
 
 use bevy::prelude::*;
 
-use crate::{plugins::spawn_enemy::spawn_enemy::EnemyTranslations, resources::entity::TowerEntity};
+use crate::{
+    plugins::spawn_enemy_plugin::resources::enemy_translations::EnemyTranslations,
+    resources::entity::TowerEntity,
+};
 
 pub struct ShootTowerPlugin;
 

@@ -1,8 +1,8 @@
-use std::slice::Iter;
-
 use bevy::prelude::*;
 
 use crate::resources::grid_map::{grid::Grid, grid_coord::GridCoord};
+
+use super::{components::enemy::Enemy, resources::enemy_translations::EnemyTranslations};
 
 pub struct SpawnEnemyPlugin;
 
@@ -19,31 +19,11 @@ impl Plugin for SpawnEnemyPlugin {
     }
 }
 
-#[derive(Component)]
-pub struct Enemy(usize);
-
 #[derive(Resource)]
 struct EnemySpawnTimer(Timer);
 
 #[derive(Resource)]
 struct EnemyCount(usize);
-
-#[derive(Resource, Debug)]
-pub struct EnemyTranslations(Vec<Vec2>);
-
-impl EnemyTranslations {
-    pub fn push(&mut self, translation: Vec2) {
-        self.0.push(translation);
-    }
-
-    pub fn iter(&self) -> Iter<'_, Vec2> {
-        self.0.iter()
-    }
-
-    pub fn mutate_translation(&mut self, index: usize, new_val: Vec2) {
-        self.0[index] = new_val;
-    }
-}
 
 fn spawn_enemies(
     commands: Commands,
@@ -83,7 +63,7 @@ fn move_enemies(
             y: transform.translation.y,
         };
 
-        enemy_translations.mutate_translation(enemy.0, new_translation);
+        enemy_translations.mutate_translation(enemy.id(), new_translation);
     }
 }
 
@@ -113,7 +93,7 @@ fn spawn_single_enemy(
                 texture: asset_server.load("test_enemy.png"),
                 ..default()
             },
-            Enemy(id),
+            Enemy::new(100.0, 100.0, id),
         ))
         .id()
 }

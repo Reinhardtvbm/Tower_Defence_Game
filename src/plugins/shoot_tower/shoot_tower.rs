@@ -2,10 +2,7 @@ use std::f32::consts::PI;
 
 use bevy::prelude::*;
 
-use crate::{
-    plugins::spawn_enemy::spawn_enemy::{Enemy, EnemyTranslations},
-    resources::entity::{Tower, TowerEntity},
-};
+use crate::{plugins::spawn_enemy::spawn_enemy::EnemyTranslations, resources::entity::TowerEntity};
 
 pub struct ShootTowerPlugin;
 
@@ -16,12 +13,11 @@ impl Plugin for ShootTowerPlugin {
 }
 
 fn shoot(
-    mut commands: Commands,
+    mut _commands: Commands,
     mut tower: Query<(&mut Transform, &mut TowerEntity)>,
     enemy_translations: Res<EnemyTranslations>,
-    windows: Res<Windows>,
 ) {
-    for (mut tower_transform, tower) in &mut tower {
+    for (mut tower_transform, _tower) in &mut tower {
         if let Some(enemy_pos) = enemy_translations.iter().last() {
             let (tower_x, tower_y) = (tower_transform.translation.x, tower_transform.translation.y);
             let (enemy_x, enemy_y) = (enemy_pos.x, enemy_pos.y);

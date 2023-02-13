@@ -146,6 +146,8 @@ impl Grid {
         self.get_key_value(&grid_coord)
     }
 
+    // ==========================================================================================================
+
     // HashMap functions:
 
     pub fn get(&self, grid_coord: &GridCoord) -> Option<&Tile> {

@@ -1,5 +1,6 @@
-use crate::resources::grid::Grid;
 use bevy::prelude::*;
+
+use crate::resources::grid_map::grid::Grid;
 
 pub struct DebugGridPlugin;
 

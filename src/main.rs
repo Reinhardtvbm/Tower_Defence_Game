@@ -6,7 +6,7 @@ use tower_defence::{
         debug_grid::debug_grid::DebugGridPlugin, place_tower::place_tower::PlaceTowerPlugin,
         shoot_tower::shoot_tower::ShootTowerPlugin, spawn_enemy::spawn_enemy::SpawnEnemyPlugin,
     },
-    resources::grid::{Grid, GridSize},
+    resources::grid_map::{grid::Grid, grid_size::GridSize},
 };
 //use tower_defence::gui::main_menu::setup_main_menu;
 

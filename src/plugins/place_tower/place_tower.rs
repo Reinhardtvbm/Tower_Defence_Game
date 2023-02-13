@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{plugins::debug_grid::debug_grid::PrevBlock, resources::grid::Grid};
+use crate::{plugins::debug_grid::debug_grid::PrevBlock, resources::grid_map::grid::Grid};
 
 use super::place_fsm::{PlaceFSM, PlaceState};
 

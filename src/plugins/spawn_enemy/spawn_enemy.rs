@@ -2,7 +2,7 @@ use std::slice::Iter;
 
 use bevy::prelude::*;
 
-use crate::resources::grid::{Grid, GridCoord};
+use crate::resources::grid_map::{grid::Grid, grid_coord::GridCoord};
 
 pub struct SpawnEnemyPlugin;
 

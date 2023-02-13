@@ -23,5 +23,5 @@ pub mod plugins {
 
 pub mod resources {
     pub mod entity;
-    pub mod grid;
+    pub mod grid_map;
 }

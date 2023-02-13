@@ -1,32 +1,28 @@
-use bevy::prelude::{Component, Entity};
+use bevy::prelude::Component;
 
-#[derive(Debug)]
+#[derive(Debug, Component, Clone)]
 pub enum TowerEntity {
     Tower(Tower),
     Enemy(Enemy),
     Path(Path),
 }
 
-#[derive(Debug, Component)]
+#[derive(Debug, Component, Clone)]
 pub struct Tower {
     health: f32,
     projectile_damage: f32,
     fire_rate: f32,
-    entity: Entity,
+    range: f32,
 }
 
 impl Tower {
-    pub fn new(health: f32, projectile_damage: f32, fire_rate: f32, entity: Entity) -> Self {
+    pub fn new(health: f32, projectile_damage: f32, fire_rate: f32, range: f32) -> Self {
         Self {
             health,
             projectile_damage,
             fire_rate,
-            entity,
+            range,
         }
-    }
-
-    pub fn get_entity(&self) -> Entity {
-        self.entity
     }
 
     pub fn increase_damage_constant(&mut self, constant: f32) {
@@ -52,15 +48,23 @@ impl Tower {
     pub fn increase_health_percentage(&mut self, percentage: f32) {
         self.health *= 1.0 + (percentage / 100.0);
     }
+
+    pub fn increase_range_constant(&mut self, constant: f32) {
+        self.range += constant;
+    }
+
+    pub fn increase_range_percentage(&mut self, percentage: f32) {
+        self.range *= 1.0 + (percentage / 100.0);
+    }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Enemy {
-    health: usize,
-    speed: usize,
+    _health: usize,
+    _speed: usize,
 }
 
 impl Enemy {}
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Path;

@@ -4,6 +4,7 @@ use clap::Parser;
 use tower_defence::{
     plugins::{
         debug_grid::debug_grid::DebugGridPlugin, place_tower::place_tower::PlaceTowerPlugin,
+        shoot_tower::shoot_tower::ShootTowerPlugin, spawn_enemy::spawn_enemy::SpawnEnemyPlugin,
     },
     resources::grid::{Grid, GridSize},
 };
@@ -44,6 +45,8 @@ fn main() {
             0.0,
         ))
         .add_plugin(PlaceTowerPlugin)
+        .add_plugin(SpawnEnemyPlugin)
+        .add_plugin(ShootTowerPlugin)
         .run();
 }
 

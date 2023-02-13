@@ -45,7 +45,15 @@ fn select_entity_square(
                     let coord = *grid_coord;
 
                     if buttons.just_pressed(MouseButton::Left) {
-                        grid.spawn_tower(&coord, commands, asset_server);
+                        if let Some(entity) = prev_block.entity() {
+                            commands.entity(entity).despawn();
+                        }
+
+                        if grid.spawn_tower(&coord, commands, asset_server).is_err() {
+                            println!("ERROR: square ({:?}) already occupied", coord);
+                        }
+
+                        prev_block.clear();
 
                         state.toggle();
                     } else {

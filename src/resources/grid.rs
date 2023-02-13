@@ -1,13 +1,21 @@
-use std::collections::{hash_map::Keys, HashMap};
+use std::{
+    collections::{hash_map::Keys, HashMap},
+    slice::{Iter, IterMut},
+};
 
 use bevy::prelude::*;
 
 use super::entity::{Tower, TowerEntity};
 
+pub enum TowerSpawnErr {
+    Occupied,
+}
+
 /// Grid that represents the tiles on the map
 #[derive(Resource, Debug)]
 pub struct Grid {
     tiles: HashMap<GridCoord, Tile>,
+    occupied_squares: Vec<GridCoord>,
     size: GridSize,
     cell_length: f32,
     y_offset: f32,
@@ -43,6 +51,7 @@ impl Grid {
             cell_length,
             x_offset,
             y_offset,
+            occupied_squares: Vec::new(),
         }
     }
 
@@ -51,12 +60,26 @@ impl Grid {
         grid_coord: &GridCoord,
         mut commands: Commands,
         asset_server: Res<AssetServer>,
-    ) {
+    ) -> Result<(), TowerSpawnErr> {
+        if self.occupied_squares.contains(grid_coord) {
+            return Err(TowerSpawnErr::Occupied);
+        }
+
+        // retrieve the tile currently at the grid_coord and get its spawn position
         let old_tile = self.get(grid_coord).unwrap();
         let spawn_position = old_tile.get_spawn_position();
 
-        let entity = commands
-            .spawn(SpriteBundle {
+        // create a new tower for the Tile
+        let new_tower = TowerEntity::Tower(Tower::new(100.0, 1.0, 1.0, 100.0));
+
+        // create the new tile
+        let mut new_tile = Tile::new(spawn_position);
+        // put the new_tower in the tile
+        new_tile.set_entity(new_tower.clone());
+
+        // spawn the entity on the screen
+        commands.spawn((
+            SpriteBundle {
                 transform: Transform {
                     translation: Vec3 {
                         x: spawn_position.x,
@@ -72,15 +95,24 @@ impl Grid {
                 },
                 texture: asset_server.load("test_tower.png"),
                 ..default()
-            })
-            .id();
-
-        let tower = TowerEntity::Tower(Tower::new(100.0, 1.0, 1.0, entity));
-
-        let mut new_tile = Tile::new(spawn_position);
-        new_tile.set_entity(tower);
-
+            },
+            new_tower,
+        ));
+        // insert the tile into the Grid's HashMap
         self.insert(*grid_coord, new_tile);
+
+        // add the coordinate to the occupied squares
+        self.occupied_squares.push(*grid_coord);
+
+        Ok(())
+    }
+
+    pub fn occupied_squares_iter(&self) -> Iter<'_, GridCoord> {
+        self.occupied_squares.iter()
+    }
+
+    pub fn occupied_squares_iter_mut(&mut self) -> IterMut<'_, GridCoord> {
+        self.occupied_squares.iter_mut()
     }
 
     // getters

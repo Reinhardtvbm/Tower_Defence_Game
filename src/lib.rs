@@ -11,6 +11,14 @@ pub mod plugins {
         pub mod place_fsm;
         pub mod place_tower;
     }
+
+    pub mod spawn_enemy {
+        pub mod spawn_enemy;
+    }
+
+    pub mod shoot_tower {
+        pub mod shoot_tower;
+    }
 }
 
 pub mod resources {

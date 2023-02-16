@@ -48,11 +48,11 @@ fn main() {
     .add_startup_system(setup)
     .insert_resource(Grid::new(
         GridSize {
-            width: 33,
-            height: 17,
+            width: 25,
+            height: 15,
         },
-        40.0,
-        -700.0,
+        60.0,
+        0.0,
         0.0,
     ))
     .add_plugin(PlaceTowerPlugin)

@@ -21,9 +21,14 @@ pub struct Grid {
 }
 
 impl Grid {
-    pub fn new(size: GridSize, cell_length: f32, x_offset: f32, y_offset: f32) -> Self {
+    pub fn new(size: GridSize, cell_length: f32, x_center: f32, y_center: f32) -> Self {
         let width = size.width;
         let height = size.height;
+
+        let width_pixels = width as f32 * cell_length;
+
+        let x_offset = -(width_pixels / 2.0);
+        let y_offset = y_center;
 
         let mut grid_map = HashMap::new();
 

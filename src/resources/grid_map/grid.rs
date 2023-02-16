@@ -27,7 +27,7 @@ impl Grid {
 
         let width_pixels = width as f32 * cell_length;
 
-        let x_offset = -(width_pixels / 2.0);
+        let x_offset = x_center-(width_pixels / 2.0);
         let y_offset = y_center;
 
         let mut grid_map = HashMap::new();
@@ -64,8 +64,18 @@ impl Grid {
         mut commands: Commands,
         asset_server: Res<AssetServer>,
     ) -> Result<(), TowerSpawnErr> {
-        if self.occupied_squares.contains(grid_coord) {
+         if self.get(grid_coord).is_some() {
             return Err(TowerSpawnErr::Occupied);
+        }    
+
+        if let Some(tile) = self.get(grid_coord) {
+            if let Some(tow_ent) = tile.entity() {
+                match tow_ent {
+                    TowerEntity::Tower(_) => unimplemented!(),
+                    TowerEntity::Enemy(_) => todo!(),
+                    TowerEntity::Path(_) => todo!(),
+                }
+            }
         }
 
         // retrieve the tile currently at the grid_coord and get its spawn position
@@ -73,7 +83,7 @@ impl Grid {
         let spawn_position = old_tile.get_spawn_position();
 
         // create a new tower for the Tile
-        let new_tower = TowerEntity::Tower(Tower::new(100.0, 1.0, 1.0, 100.0));
+        let new_tower = TowerEntity::Tower(Tower::new(100.0, 1.0, 1.0, 100.0,  100.0));
 
         // create the new tile
         let mut new_tile = Tile::new(spawn_position);

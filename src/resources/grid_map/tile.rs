@@ -30,4 +30,8 @@ impl Tile {
     pub fn set_entity(&mut self, entity: TowerEntity) {
         self.entity = Some(entity);
     }
+
+    pub fn entity(&self) -> Option<TowerEntity> {
+        self.entity
+    }
 }

@@ -1,4 +1,4 @@
-use bevy::{prelude::*, reflect::erased_serde::__private::serde::__private::de};
+use bevy::prelude::*;
 
 use clap::Parser;
 use tower_defence::{
@@ -48,8 +48,8 @@ fn main() {
     .add_startup_system(setup)
     .insert_resource(Grid::new(
         GridSize {
-            width: 25,
-            height: 15,
+            width: 15,
+            height: 10,
         },
         60.0,
         0.0,

@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{plugins::debug_grid::debug_grid::PrevBlock, resources::grid_map::grid::Grid};
+use crate::{plugins::{debug_grid::debug_grid::PrevBlock, money_plugin::money::Money}, resources::grid_map::grid::Grid};
 
 use super::place_fsm::{PlaceFSM, PlaceState};
 
@@ -23,6 +23,7 @@ fn select_entity_square(
     keys: Res<Input<KeyCode>>,
     buttons: Res<Input<MouseButton>>,
     asset_server: Res<AssetServer>,
+    mut money: ResMut<Money> 
 ) {
     match state.get_state() {
         PlaceState::Place => {
@@ -49,10 +50,14 @@ fn select_entity_square(
                             commands.entity(entity).despawn();
                         }
 
-                        if grid.spawn_tower(&coord, commands, asset_server).is_err() {
-                            println!("ERROR: square ({:?}) already occupied", coord);
-                        }
-
+                        if money.amount() > 0.0 {
+                            if grid.spawn_tower(&coord, commands, asset_server).is_err() {
+                                println!("ERROR: square ({:?}) already occupied", coord);
+                            } else {
+                                    money.spend_money(100.0)
+                                }
+                        } //else get fucked
+                        
                         prev_block.clear();
 
                         state.toggle();

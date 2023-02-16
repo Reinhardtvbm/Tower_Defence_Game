@@ -1,13 +1,13 @@
 use bevy::prelude::Component;
 
-#[derive(Debug, Clone, Component)]
+#[derive(Debug, Clone, Component, Copy)]
 pub struct Enemy {
     health: Health,
     speed: f32,
     id: usize,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Health {
     full: f32,
     actual: f32,

@@ -99,13 +99,13 @@ fn spawn_sprite(
                 translation: Vec3 {
                     x: position.x,
                     y: position.y,
-                    z: 0.0,
+                    z: 10.0,
                 },
                 rotation: Quat::from_rotation_x(0.0),
                 scale: Vec3 {
                     x: cell_length / 100.0,
                     y: cell_length / 100.0,
-                    z: 500.0,
+                    z: 1.0,
                 },
             },
             texture: asset_server.load("test_tower.png"),

@@ -1,6 +1,5 @@
 use bevy::prelude::*;
 
-//heyo bitches its me
 
 pub struct MoneyPlugin;
 

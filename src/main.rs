@@ -1,9 +1,10 @@
-use bevy::prelude::*;
+use bevy::{prelude::*, reflect::erased_serde::__private::serde::__private::de};
 
 use clap::Parser;
 use tower_defence::{
     plugins::{
-        debug_grid::debug_grid::DebugGridPlugin, place_tower::place_tower::PlaceTowerPlugin,
+        debug_grid::debug_grid::DebugGridPlugin, money_plugin::money::MoneyPlugin,
+        place_tower::place_tower::PlaceTowerPlugin,
         shoot_tower_plugin::shoot_tower::ShootTowerPlugin,
         spawn_enemy_plugin::spawn_enemy::SpawnEnemyPlugin,
     },
@@ -33,22 +34,32 @@ fn main() {
     }
 
     // adding stuff that is always necessary
-    app.add_plugins(DefaultPlugins)
-        //.add_startup_system(setup_main_menu)
-        .add_startup_system(setup)
-        .insert_resource(Grid::new(
-            GridSize {
-                width: 33,
-                height: 17,
-            },
-            60.0,
-            -950.0,
-            0.0,
-        ))
-        .add_plugin(PlaceTowerPlugin)
-        .add_plugin(SpawnEnemyPlugin)
-        .add_plugin(ShootTowerPlugin)
-        .run();
+    app.add_plugins(DefaultPlugins.set(WindowPlugin {
+        window: WindowDescriptor {
+            mode: WindowMode::BorderlessFullscreen,
+            title: "RhinoTD".into(),
+            cursor_grab_mode: bevy::window::CursorGrabMode::None,
+            ..default()
+            
+        },
+        ..default()
+    }))
+    //.add_startup_system(setup_main_menu)
+    .add_startup_system(setup)
+    .insert_resource(Grid::new(
+        GridSize {
+            width: 33,
+            height: 17,
+        },
+        40.0,
+        -700.0,
+        0.0,
+    ))
+    .add_plugin(PlaceTowerPlugin)
+    .add_plugin(SpawnEnemyPlugin)
+    .add_plugin(ShootTowerPlugin)
+    .add_plugin(MoneyPlugin)
+    .run();
 }
 
 fn setup(mut commands: Commands) {

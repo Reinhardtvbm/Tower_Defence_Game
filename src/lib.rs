@@ -1,4 +1,5 @@
 pub mod plugins {
+    pub mod money_plugin;
     pub mod shoot_tower_plugin;
     pub mod spawn_enemy_plugin;
 
